@@ -36,3 +36,6 @@ src/test/generated_tests
 .gradle/
 build/
 bin/
+
+# Docker
+docker/mysql/data
