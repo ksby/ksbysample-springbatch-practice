@@ -8,3 +8,10 @@
  */
 
 rootProject.name = 'ksbysample-springbatch-practice'
+rootDir.eachFileRecurse { f ->
+    if ( f.name == "build.gradle" ) {
+        String relativePath = f.parentFile.absolutePath - rootDir.absolutePath
+        String projectName = relativePath.replaceAll("[\\\\\\/]", ":")
+        include projectName
+    }
+}
