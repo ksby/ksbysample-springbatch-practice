@@ -4,6 +4,8 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+// 実行用コマンド
+//  java -jar spring-batch-sample/build/libs/spring-batch-sample-0.0.1-SNAPSHOT.jar customerUpdateFile=file:D:\project-springboot\ksbysample-springbatch-practice\spring-batch-sample\src\test\resources\testdata\customer_update.csv
 @EnableBatchProcessing
 @SpringBootApplication
 public class SpringBatchSampleApplication {

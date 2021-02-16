@@ -1,17 +1,33 @@
 create table CUSTOMER
 (
-    CUSTOMER_ID        int          not null
+    CUSTOMER_ID       int          not null
         primary key,
-    FIRST_NAME         varchar(45)  null,
-    MIDDLE_NAME        varchar(45)  null,
-    LAST_NAME          varchar(45)  null,
-    SSN                varchar(45)  null,
-    EMAIL_ADDRESS      varchar(256) null,
-    HOME_PHONE         char(10)     null,
-    CELL_PHONE         char(10)     null,
-    WORK_PHONE         char(10)     null,
-    NOTIFICATION_PRIEF char         null
+    FIRST_NAME        varchar(45)  null,
+    MIDDLE_NAME       varchar(45)  null,
+    LAST_NAME         varchar(45)  null,
+    ADDRESS1          varchar(45)  null,
+    ADDRESS2          varchar(45)  null,
+    CITY              varchar(45)  null,
+    STATE             varchar(45)  null,
+    POSTAL_CODE       varchar(45)  null,
+    EMAIL_ADDRESS     varchar(256) null,
+    HOME_PHONE        char(15)     null,
+    CELL_PHONE        char(15)     null,
+    WORK_PHONE        char(15)     null,
+    NOTIFICATION_PREF char         null
 );
+insert into CUSTOMER(CUSTOMER_ID)
+values (2);
+insert into CUSTOMER(CUSTOMER_ID)
+values (441);
+insert into CUSTOMER(CUSTOMER_ID)
+values (174);
+insert into CUSTOMER(CUSTOMER_ID)
+values (287);
+insert into CUSTOMER(CUSTOMER_ID)
+values (168);
+insert into CUSTOMER(CUSTOMER_ID)
+values (204);
 
 create table ACCOUNT
 (
