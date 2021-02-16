@@ -35,3 +35,27 @@ services:
     environment:
       - TZ=Asia/Tokyo
       - ADMINER_DEFAULT_SERVER=mysql
+
+  #############################################################################
+  # Flyway
+  #
+  flyway:
+    image: flyway/flyway:${FLYWAY_VERSION}-alpine
+    container_name: flyway
+    environment:
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./db/migration:/flyway/sql
+    command: -url=${FLYWAY_URL} -user=${FLYWAY_USER} -password=${FLYWAY_PASSWORD} -connectRetries=60 migrate
+    depends_on:
+      - mysql
+    # 下の３行は debug 用
+    # うまく動かない時はコメントアウトを解除、上の command をコメントアウトした後、
+    # docker exec -it flyway /bin/sh
+    # で接続してから
+    # flyway <command に記述した文字列>
+    # を実行してみる
+    #
+    # entrypoint: /bin/sh
+    # stdin_open: true
+    # tty: true
