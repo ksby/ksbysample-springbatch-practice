@@ -44,9 +44,10 @@ create table CUSTOMER_ACCOUNT
 
 create table TRANSACTION
 (
-    TRANSACTION_ID     int       not null,
-    ACCOUNT_ACCOUNT_ID int       not null,
-    CREDIT             float     null,
-    DEBIT              float     null,
-    TIMESTAMP          timestamp null
+    TRANSACTION_ID     int          not null,
+    ACCOUNT_ACCOUNT_ID int          not null,
+    DESCRIPTION        varchar(256) null,
+    CREDIT             float        null,
+    DEBIT              float        null,
+    TIMESTAMP          timestamp    null
 );
