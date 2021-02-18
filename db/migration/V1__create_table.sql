@@ -35,6 +35,10 @@ create table ACCOUNT
     BALANCE             float     null,
     LAST_STATEMENT_DATE timestamp null
 );
+insert into ACCOUNT(ACCOUNT_ID, BALANCE)
+values (405, 0);
+insert into ACCOUNT(ACCOUNT_ID, BALANCE)
+values (584, 0);
 
 create table CUSTOMER_ACCOUNT
 (
