@@ -10,7 +10,10 @@ import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.MultiResourceItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.item.file.builder.MultiResourceItemWriterBuilder;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.LineTokenizer;
@@ -46,6 +49,7 @@ public class ImportJobConfiguration {
                 .start(importCustomerUpdates())
                 .next(importTransactions())
                 .next(applyTransactions())
+                .next(generateStatements(null))
                 .build();
     }
 
@@ -298,6 +302,69 @@ public class ImportJobConfiguration {
                         "WHERE ACCOUNT_ID = :accountId")
                 .beanMapped()
                 .assertUpdates(false)
+                .build();
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Bean
+    public Step generateStatements(AccountItemProcessor itemProcessor) {
+        return this.stepBuilderFactory.get("generateStatements")
+                .<Statement, Statement>chunk(1)
+                .reader(statementItemReader(null))
+                .processor(itemProcessor)
+                .writer(statementItemWriter(null))
+                .listener(new StatementItemWriteListener())
+                .build();
+    }
+
+    @Bean
+    public JdbcCursorItemReader<Statement> statementItemReader(DataSource dataSource) {
+        return new JdbcCursorItemReaderBuilder<Statement>()
+                .name("statementItemReader")
+                .dataSource(dataSource)
+                .sql("select * from CUSTOMER")
+                .rowMapper((resultSet, i) -> {
+                    Customer customer = new Customer(resultSet.getLong("customer_id"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("middle_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("address1"),
+                            resultSet.getString("address2"),
+                            resultSet.getString("city"),
+                            resultSet.getString("state"),
+                            resultSet.getString("postal_code"),
+                            resultSet.getString("ssn"),
+                            resultSet.getString("email_address"),
+                            resultSet.getString("home_phone"),
+                            resultSet.getString("cell_phone"),
+                            resultSet.getString("work_phone"),
+                            resultSet.getInt("notification_pref"));
+                    return new Statement(customer);
+                })
+                .build();
+    }
+
+    @Bean
+    public FlatFileItemWriter<Statement> indivisualStatementItemWriter() {
+        FlatFileItemWriter<Statement> itemWriter = new FlatFileItemWriter<>();
+
+        itemWriter.setName("indivisualStatementItemWriter");
+        itemWriter.setHeaderCallback(new StatementHeaderCallback());
+        itemWriter.setLineAggregator(new StatementLineAggregator());
+
+        return itemWriter;
+    }
+
+    @Bean
+    @StepScope
+    public MultiResourceItemWriter<Statement> statementItemWriter(
+            @Value("#{jobParameters['outputDirectory']}") Resource outputDir) {
+        return new MultiResourceItemWriterBuilder<Statement>()
+                .name("statementItemWriter")
+                .resource(outputDir)
+                .itemCountLimitPerResource(1)
+                .delegate(indivisualStatementItemWriter())
                 .build();
     }
 

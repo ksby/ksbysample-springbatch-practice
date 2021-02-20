@@ -10,6 +10,7 @@ create table CUSTOMER
     CITY              varchar(45)  null,
     STATE             varchar(45)  null,
     POSTAL_CODE       varchar(45)  null,
+    SSN               varchar(45)  null,
     EMAIL_ADDRESS     varchar(256) null,
     HOME_PHONE        char(15)     null,
     CELL_PHONE        char(15)     null,
@@ -45,6 +46,8 @@ create table CUSTOMER_ACCOUNT
     CUSTOMER_CUSTOMER_ID int not null,
     ACCOUNT_ACCOUNT_ID   int not null
 );
+insert into CUSTOMER_ACCOUNT values (174, 405);
+insert into CUSTOMER_ACCOUNT values (204, 584);
 
 create table TRANSACTION
 (

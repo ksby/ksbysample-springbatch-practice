@@ -1,11 +1,14 @@
 package ksbysample.batch.sampleapp;
 
+import lombok.ToString;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @XmlRootElement(name = "transaction")
+@ToString
 public class Transaction {
 
     private long transactionId;
@@ -32,9 +35,9 @@ public class Transaction {
                        Date timestamp) {
         this.transactionId = transactionId;
         this.accountId = accountId;
-        this.description = description;
-        this.credit = credit;
-        this.debit = debit;
+        this.description = description != null ? description : "";
+        this.credit = credit != null ? credit : new BigDecimal("0");
+        this.debit = debit != null ? debit : new BigDecimal("0");
         this.timestamp = timestamp;
     }
 

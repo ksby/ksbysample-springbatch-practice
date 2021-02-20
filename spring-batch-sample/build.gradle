@@ -12,7 +12,15 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    // annotationProcessor と testAnnotationProcessor、compileOnly と testCompileOnly を併記不要にする
+    testAnnotationProcessor.extendsFrom annotationProcessor
+    testImplementation.extendsFrom compileOnly
+}
+
 dependencies {
+    def lombokVersion = "1.18.18"
+
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
@@ -22,6 +30,11 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
+
+    // for lombok
+    // testAnnotationProcessor、testCompileOnly を併記しなくてよいよう configurations で設定している
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
 }
 
 test {
