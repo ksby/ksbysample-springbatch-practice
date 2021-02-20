@@ -1,0 +1,15 @@
+// Building Java Applications with libraries Sample
+// https://docs.gradle.org/current/samples/sample_building_java_applications_multi_project.html
+// Stop using Gradle buildSrc. Use composite builds instead
+// https://proandroiddev.com/stop-using-gradle-buildsrc-use-composite-builds-instead-3c38ac7a2ab3
+// Composing builds
+// https://docs.gradle.org/current/userguide/composite_builds.html
+// Use buildSrc to abstract imperative logic
+// https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:build_sources
+plugins {
+    id "groovy-gradle-plugin"
+}
+
+repositories {
+    gradlePluginPortal()
+}

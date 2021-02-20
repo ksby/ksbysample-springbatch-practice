@@ -8,10 +8,19 @@
  */
 
 rootProject.name = 'ksbysample-springbatch-practice'
+
+// buildSrc → Composing builds へ変更する方法
+// 1. プロジェクトの root 直下の buildSrc ディレクトリを plugins に変更する
+// 2. 下の includeBuild 文のコメントアウトを解除する
+// 3. 下の ":buildSrc" → ":plugins" に変更する
+//includeBuild("plugins")
+
 rootDir.eachFileRecurse { f ->
-    if ( f.name == "build.gradle" ) {
+    if (f.name == "build.gradle") {
         String relativePath = f.parentFile.absolutePath - rootDir.absolutePath
         String projectName = relativePath.replaceAll("[\\\\\\/]", ":")
-        include projectName
+        if (projectName != ":buildSrc") {
+            include projectName
+        }
     }
 }
