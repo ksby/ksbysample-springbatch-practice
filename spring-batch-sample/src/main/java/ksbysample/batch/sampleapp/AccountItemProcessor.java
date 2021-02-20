@@ -4,6 +4,8 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.Types;
+
 
 @Component
 public class AccountItemProcessor implements ItemProcessor<Statement, Statement> {
@@ -32,6 +34,7 @@ public class AccountItemProcessor implements ItemProcessor<Statement, Statement>
                         "where CUSTOMER_CUSTOMER_ID = ?) " +
                         "order by t.TIMESTAMP",
                 new Object[]{item.getCustomer().getId()},
+                new int[]{Types.NUMERIC},
                 new AccountResultSetExtractor()));
 
         return item;

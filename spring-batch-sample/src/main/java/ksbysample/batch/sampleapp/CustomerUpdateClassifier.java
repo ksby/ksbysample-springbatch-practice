@@ -4,7 +4,11 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.classify.Classifier;
 
+import java.io.Serializable;
+
 public class CustomerUpdateClassifier implements Classifier<CustomerUpdate, ItemWriter<? super CustomerUpdate>> {
+
+    private static final long serialVersionUID = 3551204180606073970L;
 
     private final JdbcBatchItemWriter<CustomerUpdate> recordType1ItemWriter;
     private final JdbcBatchItemWriter<CustomerUpdate> recordType2ItemWriter;
