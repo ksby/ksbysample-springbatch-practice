@@ -1,11 +1,14 @@
 package ksbysample.batch.helloworld;
 
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParametersValidator;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.CompositeJobParametersValidator;
+import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +16,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Arrays;
+
 // 実行用コマンド
-// java -jar hello-world-batch/build/libs/hello-world-batch-0.0.1-SNAPSHOT.jar name="tanaka taro"
+// java -jar hello-world-batch/build/libs/hello-world-batch-0.0.1-SNAPSHOT.jar fileName=sample.csv name="tanaka taro"
 @EnableBatchProcessing
 @SpringBootApplication
 public class HelloWorldBatchApplication {
@@ -33,6 +38,7 @@ public class HelloWorldBatchApplication {
     public Job job() {
         return this.jobBuilderFactory.get("basicJob")
                 .start(step1())
+                .validator(validator())
                 .build();
     }
 
@@ -52,6 +58,23 @@ public class HelloWorldBatchApplication {
             System.out.println(String.format("★★★ Hello, %s", name));
             return RepeatStatus.FINISHED;
         };
+    }
+
+    @Bean
+    public CompositeJobParametersValidator validator() {
+        CompositeJobParametersValidator validator =
+                new CompositeJobParametersValidator();
+
+        DefaultJobParametersValidator defaultJobParametersValidator =
+                new DefaultJobParametersValidator(
+                        new String[]{"fileName"},
+                        new String[]{"name"}                );
+        defaultJobParametersValidator.afterPropertiesSet();
+
+        validator.setValidators(Arrays.asList(new Parametervalidator(),
+                defaultJobParametersValidator));
+
+        return validator;
     }
 
     public static void main(String[] args) {

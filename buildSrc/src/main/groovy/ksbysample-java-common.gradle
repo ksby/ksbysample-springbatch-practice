@@ -23,6 +23,7 @@ dependencies {
     def lombokVersion = "1.18.18"
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'org.apache.commons:commons-lang3'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
