@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 import java.util.Arrays;
 
 // 実行用コマンド
-// java -jar hello-world-batch/build/libs/hello-world-batch-0.0.2-SNAPSHOT.jar fileName=sample.csv name="tanaka taro"
+// java -jar hello-world-batch/build/libs/hello-world-batch-0.0.1-SNAPSHOT.jar fileName=sample.csv name="tanaka taro"
 @EnableBatchProcessing
 @SpringBootApplication
 public class HelloWorldBatchApplication {
@@ -39,6 +39,7 @@ public class HelloWorldBatchApplication {
                 .start(step1())
                 .validator(validator())
                 .incrementer(new DailyJobTimesamper())
+                .listener(new JobLoggerListener())
                 .build();
     }
 
