@@ -24,4 +24,10 @@ buildscript {
 subprojects {
     apply plugin: "io.spring.dependency-management"
     apply plugin: "org.springframework.boot"
+
+    dependencyManagement {
+        imports {
+            mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+        }
+    }
 }
