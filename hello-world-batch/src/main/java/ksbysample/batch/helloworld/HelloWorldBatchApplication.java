@@ -1,7 +1,6 @@
 package ksbysample.batch.helloworld;
 
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParametersValidator;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -9,7 +8,6 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 import java.util.Arrays;
 
 // 実行用コマンド
-// java -jar hello-world-batch/build/libs/hello-world-batch-0.0.1-SNAPSHOT.jar fileName=sample.csv name="tanaka taro"
+// java -jar hello-world-batch/build/libs/hello-world-batch-0.0.2-SNAPSHOT.jar fileName=sample.csv name="tanaka taro"
 @EnableBatchProcessing
 @SpringBootApplication
 public class HelloWorldBatchApplication {
@@ -40,7 +38,7 @@ public class HelloWorldBatchApplication {
         return this.jobBuilderFactory.get("basicJob")
                 .start(step1())
                 .validator(validator())
-                .incrementer(new RunIdIncrementer())
+                .incrementer(new DailyJobTimesamper())
                 .build();
     }
 
@@ -70,7 +68,7 @@ public class HelloWorldBatchApplication {
         DefaultJobParametersValidator defaultJobParametersValidator =
                 new DefaultJobParametersValidator(
                         new String[]{"fileName"},
-                        new String[]{"name", "run.id"}                );
+                        new String[]{"name", "currentDate"});
         defaultJobParametersValidator.afterPropertiesSet();
 
         validator.setValidators(Arrays.asList(new Parametervalidator(),
